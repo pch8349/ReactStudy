@@ -67,13 +67,14 @@ const Register = () => {
       setErrMsg("Invalid Entry");
       return;
     }
+    console.log(user, pwd);
     try {
       const response = await axios.post(
         REGISTER_URL,
-        JSON.stringify({ user, pwd }),
+        JSON.stringify({ user: user, pwd: pwd }), // json에서 받을 이름으로 설정 해야됨 useState 변수를 api에서 받을 이름과 동일하게 설정했으므로 그냥 안해도 그만.
         {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
+          headers: { "Content-Type": "application/json" },//고유 object를 입력해줌
+          withCredentials: true, // 
         }
       );
       console.log(response?.data);
@@ -93,7 +94,7 @@ const Register = () => {
       } else {
         setErrMsg("Registration Failed");
       }
-      errRef.current.focus();
+      errRef.current.focus(); // 현재 에러에 포커스
     }
   };
 
@@ -137,7 +138,7 @@ const Register = () => {
               autoComplete="off" //전에 썼던 값 보여주기 끄기
               onChange={(e) => setUser(e.target.value)} // useState에 input에 넣어진 값 넣기
               value={user}
-              required
+              required // 꼭 작성해야 함을 나타냄
               aria-invalid={validName ? "false" : "true"} // 아이디 유효성 검사 통과시 사용가능
               aria-describedby="uidnote" // 해당 필드에 대한 설명. 해당 폼이 필요한거, screen reader가 읽는 것 등
               onFocus={() => setUserFocus(true)} // 포커스
@@ -175,13 +176,14 @@ const Register = () => {
               value={pwd}
               required
               aria-invalid={validPwd ? "false" : "true"}
-              aria-describedby="pwdnote"
+              aria-describedby="pwdnote" // 아래에 id가 pwdnote 인 것과 연결시켜줌
               onFocus={() => setPwdFocus(true)}
               onBlur={() => setPwdFocus(false)}
             />
             <p
               id="pwdnote"
               className={pwdFocus && !validPwd ? "instructions" : "offscreen"}
+              // 패스워드 입력칸이 선택되었고, 비밀번호가 유효하지 않을 때의 3항연산 조건문
             >
               <FontAwesomeIcon icon={faInfoCircle} />
               8 to 24 characters.
